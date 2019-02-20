@@ -582,7 +582,7 @@ static int imx7_do_context_losing_lpm(uint32_t lpm_flags,
 		gic_save_state(&gic_data);
 
 	/* save banked registers for every mode except monitor mode */
-	sm_save_modes_regs(&nsec->mode_regs);
+	sm_save_unbanked_regs(&nsec->ub_regs);
 	
 	ret = sm_pm_cpu_suspend(lpm_flags, imx7_lpm_entry);
 
@@ -603,7 +603,7 @@ static int imx7_do_context_losing_lpm(uint32_t lpm_flags,
 	git_timer_restore_state(&git_state);
 
 	/* Restore register of different mode in secure world */
-	sm_restore_modes_regs(&nsec->mode_regs);
+	sm_restore_unbanked_regs(&nsec->ub_regs);
 
 	//main_init_gic();
 	if ((lpm_flags & LPM_POWER_DOWN_SCU) &&
